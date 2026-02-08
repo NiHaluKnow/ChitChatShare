@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChitChatShare - Cloud Storage</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="screen active">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="logo">
+                    <img src="image/HomePageLogo.png" alt="ChitChatShare Logo">
+                </div>
+                <h1>ChitChatShare</h1>
+                <p class="subtitle">Secure file sharing platform</p>
+                
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-mode="LOGIN" onclick="switchAuthMode('LOGIN')">Login</button>
+                    <button class="auth-tab" data-mode="SIGNUP" onclick="switchAuthMode('SIGNUP')">Sign Up</button>
+                    <button class="auth-tab" data-mode="RECOVER" onclick="switchAuthMode('RECOVER')">Forgot?</button>
+                </div>
+                
+                <form id="login-form">
+                    <div class="input-group">
+                        <input type="text" id="username-input" placeholder="Enter your username" required autocomplete="username">
+                    </div>
+                    <div class="input-group" id="password-group">
+                        <input type="password" id="password-input" placeholder="Enter your password" required autocomplete="current-password">
+                    </div>
+                    <div class="input-group" id="security-answer-group" style="display: none;">
+                        <input type="text" id="security-answer-input" placeholder="Your favorite word (security answer)" autocomplete="off">
+                    </div>
+                    <div class="input-group" id="new-password-group" style="display: none;">
+                        <input type="password" id="new-password-input" placeholder="Enter new password" autocomplete="new-password">
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="auth-submit-btn">Login</button>
+                </form>
+                
+                <div id="connection-status" class="status-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="main-screen" class="screen">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo-container">
+                    <img src="image/HomePageLogo.png" alt="ChitChatShare Logo" width="50">
+                </div>
+                <h2>ChitChatShare</h2>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <span id="user-initial">A</span>
+                    </div>
+                    <span id="current-username">User</span>
+                </div>
+                <button id="logout-btn" class="btn btn-secondary">Logout</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar">
+                <nav class="nav-menu">
+                    <button class="nav-item active" data-view="my-files">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                            <polyline points="13 2 13 9 20 9"></polyline>
+                        </svg>
+                        <span>My Files</span>
+                    </button>
+                    <button class="nav-item" data-view="upload">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <span>Upload</span>
+                    </button>
+                    <button class="nav-item" data-view="users">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        <span>Users</span>
+                    </button>
+                    <button class="nav-item" data-view="messages">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span>Messages</span>
+                    </button>
+                    <button class="nav-item" data-view="history">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        <span>History</span>
+                    </button>
+                </nav>
+            </aside>
+
+            <!-- Content Area -->
+            <main class="content">
+                <!-- My Files View -->
+                <div id="my-files-view" class="view active">
+                    <div class="view-header">
+                        <h3>My Files</h3>
+                        <button class="btn btn-primary" id="refresh-my-files">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 4 23 10 17 10"></polyline>
+                                <polyline points="1 20 1 14 7 14"></polyline>
+                                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                            </svg>
+                            Refresh
+                        </button>
+                    </div>
+                    <div id="my-files-container" class="file-grid">
+                        <div class="empty-state">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                <polyline points="13 2 13 9 20 9"></polyline>
+                            </svg>
+                            <p>No files yet</p>
+                            <button class="btn btn-primary" onclick="switchView('upload')">Upload a file</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload View -->
+                <div id="upload-view" class="view">
+                    <div class="view-header">
+                        <h3>Upload File</h3>
+                    </div>
+                    <div class="upload-container">
+                        <div class="upload-box" id="upload-box">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            <p>Drag & drop files here or click to browse</p>
+                            <input type="file" id="file-input" hidden>
+                            <button class="btn btn-primary" id="browse-btn">Browse Files</button>
+                        </div>
+                        
+                        <div id="upload-options" class="upload-options" style="display: none;">
+                            <div class="form-group">
+                                <label>Access Type</label>
+                                <div class="radio-group">
+                                    <label class="radio-label">
+                                        <input type="radio" name="access-type" value="public" checked>
+                                        <span>Public (Anyone can download)</span>
+                                    </label>
+                                    <label class="radio-label">
+                                        <input type="radio" name="access-type" value="private">
+                                        <span>Private (Only you can access)</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="request-response">
+                                    Upload in response to a request
+                                </label>
+                                <input type="text" id="request-id" placeholder="Request ID" style="display: none;">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="upload-description">Description (optional)</label>
+                                <textarea id="upload-description" placeholder="Add a note about this file..." rows="2" style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); color: var(--text-primary); font-family: inherit; font-size: 14px; resize: vertical;"></textarea>
+                            </div>
+                            
+                            <button class="btn btn-primary" id="upload-btn">Upload</button>
+                            <button class="btn btn-secondary" id="cancel-upload-btn">Cancel</button>
+                        </div>
+                        
+                        <div id="upload-progress" class="upload-progress" style="display: none;">
+                            <div class="progress-info">
+                                <span id="upload-filename">file.txt</span>
+                                <span id="upload-percent">0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Users View -->
+                <div id="users-view" class="view">
+                    <div class="view-header">
+                        <h3>All Users</h3>
+                        <button class="btn btn-primary" id="refresh-users">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 4 23 10 17 10"></polyline>
+                                <polyline points="1 20 1 14 7 14"></polyline>
+                                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                            </svg>
+                            Refresh
+                        </button>
+                    </div>
+                    <div id="users-container" class="users-grid">
+                    </div>
+                </div>
+
+                <!-- Messages View -->
+                <div id="messages-view" class="view">
+                    <div class="view-header">
+                        <h3>Messages & Notifications</h3>
+                        <button class="btn btn-primary" id="new-request-btn">New Request</button>
+                    </div>
+                    <div id="messages-container">
+                        <div class="empty-state">
+                            <p>No messages</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Public Files View -->
+                <div id="user-files-view" class="view">
+                    <div class="view-header">
+                        <button class="btn btn-secondary" id="back-to-users" onclick="switchView('users')">&larr; Back to Users</button>
+                        <h3 id="user-files-title">Public Files</h3>
+                    </div>
+                    <div id="user-files-container" class="grid-container"></div>
+                </div>
+
+                <!-- History View -->
+                <div id="history-view" class="view">
+                    <div class="view-header">
+                        <h3>Activity History</h3>
+                        <button class="btn btn-primary" id="refresh-history">Refresh</button>
+                    </div>
+                    <div id="history-container">
+                        <div class="empty-state">
+                            <p>No activity yet</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Console Output (for debugging) -->
+        <div class="console-panel" id="console-panel">
+            <div class="console-header">
+                <span>Server Messages</span>
+                <button id="toggle-console" class="btn-icon">_</button>
+            </div>
+            <div class="console-body" id="console-body"></div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container"></div>
+
+    <!-- Modals -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal" id="file-request-modal">
+            <h3>Create File Request</h3>
+            <form id="file-request-form">
+                <div class="form-group">
+                    <label>Request Type</label>
+                    <select id="request-type">
+                        <option value="unicast">Specific User</option>
+                        <option value="broadcast">All Users</option>
+                    </select>
+                </div>
+                <div class="form-group" id="recipient-group">
+                    <label>Recipient Username</label>
+                    <input type="text" id="recipient-username">
+                </div>
+                <div class="form-group">
+                    <label>File Description</label>
+                    <textarea id="request-description" rows="3" required></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary">Send Request</button>
+                    <button type="button" class="btn btn-secondary" id="cancel-request">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

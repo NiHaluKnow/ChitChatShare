@@ -1,0 +1,36 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Java compiled files
+*.class
+*.jar
+*.war
+*.ear
+
+# Server runtime data
+server_data/
+downloads/
+
+# Node.js
+web-frontend/node_modules/
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Packet Tracer files
+*.pkt
+
+# Temporary/test files
+text.txt
+A1.txt
+C.txt
