@@ -9,7 +9,7 @@
 *.war
 *.ear
 
-# Server runtime data
+# Server runtime data and downloads
 server_data/
 downloads/
 
