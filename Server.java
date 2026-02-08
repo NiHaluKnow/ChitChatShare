@@ -19,7 +19,6 @@ public class Server {
     private static Map<String, FileUploadSession> uploadSessions = new ConcurrentHashMap<>();
     private static Map<String, List<FileRequest>> fileRequests = new ConcurrentHashMap<>();
     private static Map<String, List<String>> unreadMessages = new ConcurrentHashMap<>();
-    
     private static long currentBufferSize = 0;
     private static final Object bufferLock = new Object();
     
