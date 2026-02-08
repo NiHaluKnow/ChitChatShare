@@ -19,7 +19,7 @@ public class ClientHandler extends Thread {
         this.dataIn = new DataInputStream(rawIn);
         this.dataOut = new DataOutputStream(rawOut);
     }
-    
+
     @Override
     public void run() {
         try {
