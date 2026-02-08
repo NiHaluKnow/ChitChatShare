@@ -217,7 +217,7 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## 👨‍💻 Author
 
-This project was created as a part of the course **CSE-322: Computer Networks**
+This project was created as a part of the Computer Networks !
 
 ## 🙏 Acknowledgments
 
