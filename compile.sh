@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Compile all Java files in the project
+
 echo "Compiling File Server System..."
 javac Server.java ClientHandler.java Client.java
 
