@@ -1,6 +1,12 @@
 #!/bin/bash
 
 # Cleanup script to remove files created during runtime
+# This script will:
+# 1. Remove compiled .class files from the project
+# 2. Clean the server_data directory (remove generated files but keep directory structure)      
+# 3. Clean the downloads directory
+# 4. Remove any temporary or log files created in the root directory
+
 
 echo "Starting cleanup..."
 
